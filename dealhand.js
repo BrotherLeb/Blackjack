@@ -4,33 +4,64 @@
 // number between 1 and 13
 var deal = function(){
         var s = Math.floor(Math.random() * 4) + 1;
-        var n =Math.floor(Math.random() * 13) + 1;
+        var c =Math.floor(Math.random() * 13) + 1;
         //the card
-        return new Card(s, n);
+        return new Card(s, c);
 };
 
 // Make your card constructor again here, but make sure to use private
 // variables!
-function Card(s, n) {
+function Card(s, c) {
         var suit = s;
-        var number = n;
+        var card = c;
         //getters
         this.getSuit = function(){
                 return suit;
         };
-        this.getNumber = function(){
-                return number;
+        this.getCard = function(){
+        	return card;
         };
         this.getValue = function() {
-          if(number>10){
-				return 10;
-			}
-			else if(number===1) {
-				return 11;
-			}
-			else {
-				return number;
-			}
+        	if (card > 10){
+        		return 10;
+        	}
+        	else if (card === 1){
+        		return 11;
+        	}
+        	else {
+        		return card;
+        	}
+        };
+        this.suitValue = function() {
+        	if(suit === 1){
+        		return " of Clubs";
+        	}
+        	else if(suit === 2){
+        		return " of Diamonds";
+        	}
+        	else if(suit === 3){
+        		return " of Hearts";
+        	}
+        	else {
+        		return " of Spades";
+        	}
+        };
+        this.cardValue = function(){
+                if(card === 1){
+                	return "Ace";
+                }
+                else if (card === 11){
+                	return "Jack";
+                }
+                else if (card === 12){
+                	return "Queen";
+                }
+                else if (card === 13){
+                	return "King";
+                }
+                else {
+                	return card;
+                }
         };
 }
 
@@ -49,12 +80,17 @@ function Hand(){
 		var score2 = this.getCard2().getValue();
 		return score1 + score2;
 	};
+	this.hand = function(){
+		var cardVal1 = this.getCard1().cardValue() + this.getCard1().suitValue();
+		var cardVal2 = this.getCard2().cardValue() + this.getCard2().suitValue();
+		return cardVal1 + " and a " + cardVal2;
+	};
 }
 
 var myHand = new Hand();
 var yourHand = new Hand();
 
-console.log("I scored a "+myHand.score()+" and you scored a "+yourHand.score());
+console.log("I have a "+myHand.hand()+" and you have a "+yourHand.hand());
 
 if(yourHand.score() > myHand.score()) {
 	console.log("you win!");
