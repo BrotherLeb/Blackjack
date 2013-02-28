@@ -45,11 +45,22 @@ function Hand(){
 	
 
 	this.score = function(){
-		return cards[0].getValue() + cards[1].getValue();
+		var totScore = 0;
+        for (x in cards){
+            totScore += cards[x].getValue();
+        }
+        return totScore;
 	};
 
 	this.printScore = function(){
-		return "[" + cards[0].getPrintedScore() + "] [" + cards[1].getPrintedScore() + "]";
+        var totPrintScore = "[";
+        for (x in cards){
+            totPrintScore += cards[x].getPrintedScore() + "]";
+            if(x < cards.length -1){
+                totPrintScore +=" ["
+            }
+        }
+        return totPrintScore;
 	};
 
 	this.hitMe = function(){
@@ -62,15 +73,31 @@ var player1 = new Hand();
 var player2 = new Hand();
 
 console.log("...Shuffling...");
-console.log("Player 1: " + player1.printScore() + " = " + player1.score() + ".");
-console.log("Player 2: " + player2.printScore() + " = " + player2.score() + ".");
+
+// Ask the Players
+while(confirm("Player 1: You have "+player1.score()+ "! Would you like 1 more card?")){
+    player1.hitMe();
+    if(player1.score()>21){
+        alert("Too much! Player 1 busts!");
+        break;
+    }
+}
+while(confirm("Player 2: You have "+player1.score()+ "! Would you like 1 more card?")){
+    player2.hitMe();
+    if(player2.score()>21){
+        alert("Too much! Player 2 busts!");
+        break;
+    }
+}
+console.log("Player 1 Scored: " + player1.printScore() + " with the following cards: " + player1.score() + ".");
+console.log("Player 2 Scored: " + player2.printScore() + " with the following cards: " + player2.score() + ".");
 
 if(player1.score() > player2.score()){
 	if(player1.score() < 22){
 		console.log("-----Player 1 wins!-----");
 	}
 	else{
-		console.log("-----Player 2 wins!-----");
+		console.log("-----Player 1 busts! Player 2 wins!-----");
 	}
 }
 else if(player1.score() < player2.score()){
@@ -78,7 +105,7 @@ else if(player1.score() < player2.score()){
 		console.log("-----Player 2 wins!-----");
 	}
 	else{
-		console.log("-----Player 1 wins!-----");
+		console.log("-----Player 2 busts! Player 1 wins!-----");
 	}
 }
 else{
